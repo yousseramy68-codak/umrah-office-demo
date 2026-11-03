@@ -14,7 +14,7 @@ function applyLang(){
   });
   document.querySelectorAll('[data-ph-en]').forEach(function(el){el.placeholder=el.getAttribute('data-ph-'+lang);});
   var ti=document.querySelector('title[data-en]');if(ti)document.title=ti.getAttribute('data-'+lang);
-  var lb=document.getElementById('langBtn');if(lb)lb.textContent=lang==='ar'?'English':'العربية';
+  document.querySelectorAll('.seg [data-l]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.l===lang?'true':'false');});
   renderStatus();renderSlots();
 }
 function setLang(l){lang=l;store('qd-lang',l);applyLang();}
@@ -23,7 +23,7 @@ function setLang(l){lang=l;store('qd-lang',l);applyLang();}
 var theme=store('qd-theme')||'dark';
 function applyTheme(){
   if(theme==='light')root.setAttribute('data-theme','light');else root.removeAttribute('data-theme');
-  var sw=document.getElementById('themeSw');if(sw){sw.setAttribute('aria-checked',theme==='dark'?'true':'false');var k=sw.querySelector('.ic');if(k)k.textContent=theme==='dark'?'dark_mode':'light_mode';}
+  var sw=document.getElementById('themeSw');if(sw){sw.setAttribute('aria-checked',theme==='dark'?'true':'false');sw.setAttribute('aria-label',theme==='dark'?'Switch to light mode':'Switch to dark mode');}
 }
 
 /* ---------- hours / status (Asia/Riyadh) ---------- */
@@ -139,7 +139,7 @@ function initHero(){
 /* ---------- wiring ---------- */
 document.addEventListener('DOMContentLoaded',function(){
   applyTheme();applyLang();initForm();initHero();
-  var lb=document.getElementById('langBtn');if(lb)lb.addEventListener('click',function(){setLang(lang==='ar'?'en':'ar');});
+  document.querySelectorAll('.seg [data-l]').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.l);});});
   var sw=document.getElementById('themeSw');if(sw)sw.addEventListener('click',function(){theme=theme==='dark'?'light':'dark';store('qd-theme',theme);applyTheme();});
   var bg=document.getElementById('burger'),nav=document.getElementById('nav');
   if(bg)bg.addEventListener('click',function(){var o=nav.classList.toggle('open');bg.setAttribute('aria-expanded',o?'true':'false');});
